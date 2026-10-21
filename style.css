@@ -1,5 +1,5 @@
 body {
-    background-color: #FFFFE0; /* Warna merah mudah */
+    background-color: #FFB6C1; /* Warna lightpink */
     font-family:Arial,sans-serif; /Jenis huruf yang bersih dan mudah dibaca */
       color:#191970; /* Warna teks utama (Hijau mudah) */
 }
@@ -8,8 +8,8 @@ body {
   width: 300px;
   margin: 50px auto; /*50px jarak atas/bawah, auto menengahkan kiri/kanan */
   padding: 20px;
-  background-color: merah mudah;
-  border radius: 15px; /* Membuat sudut menjadi melengkung */
+  background-color: lightpink;
+  border-radius: 15px; /* Membuat sudut menjadi melengkung */
   box-shadow: 0 4px 8px rgba(0,0,0,0,1); /* Efek bayangan */
 }
 
@@ -18,7 +18,7 @@ body {
   width: 150px;
   border-radius: 50%; /* Trik membuat gambar persegi menjadi lingkaran sempurna */
 }
-.kartu profil {
+.kartu-profil {
   /* ... (kode dari slide sebelumnya)... */
   text-align: center; /* Menengakan semua teks di dalam kartu */
 }
