@@ -1,7 +1,7 @@
 body {
     background-color: #FFB6C1; /* Warna lightpink */
-    font-family:Arial,sans-serif; /Jenis huruf yang bersih dan mudah dibaca */
-      color:#191970; /* Warna teks utama (Hijau mudah) */
+    font-family:Arial,sans-serif; /* Jenis huruf yang bersih dan mudah dibaca */
+      color:#77DD77; /* Warna teks utama (Hijau Pastel) */
 }
 
 .kartu-profil {
@@ -10,7 +10,7 @@ body {
   padding: 20px;
   background-color: lightpink;
   border-radius: 15px; /* Membuat sudut menjadi melengkung */
-  box-shadow: 0 4px 8px rgba(0,0,0,0,1); /* Efek bayangan */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Efek bayangan */
 }
 
 
