@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MenuKu | Digital Cafe Menu</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #fffaf5;
+    color: #38291f;
+}
+
+header {
+    background: #694832;
+    color: white;
+    padding: 28px 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #f3e5d8;
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 24px 16px;
+}
+
+.pencarian {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.pencarian h2 {
+    margin-bottom: 16px;
+}
+
+input {
+    width: 100%;
+    max-width: 550px;
+    padding: 13px;
+    border: 1px solid #d7c5b5;
+    border-radius: 10px;
+    font-size: 15px;
+    outline-color: #987052;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h3 {
+    margin-bottom: 15px;
+}
+
+.kategori {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.kategori h3 {
+    width: 100%;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    background: #eee0d2;
+    color: #493323;
+    font-size: 14px;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.filter.aktif {
+    background: #694832;
+    color: white;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.menu-card {
+    background: white;
+    border: 1px solid #eee2d7;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 3px 10px #52351b0c;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.menu-card .emoji {
+    font-size: 35px;
+    margin-bottom: 12px;
+}
+
+.menu-card h4 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.menu-card .deskripsi {
+    color: #7b6a5c;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.harga {
+    color: #795033;
+    font-weight: bold;
+    margin-top: auto;
+    margin-bottom: 12px;
+}
+
+.menu-card button {
+    width: 100%;
+    background: #694832;
+    color: white;
+}
+
+.keranjang {
+    padding: 20px;
+    background: white;
+    border: 1px solid #eee2d7;
+    border-radius: 12px;
+}
+
+.item-keranjang {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee2d7;
+    font-size: 14px;
+}
+
+.kontrol {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.kontrol button {
+    padding: 5px 10px;
+}
+
+.total {
+    margin: 18px 0;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+#kosongkanKeranjang {
+    background: #f1e4d9;
+}
+
+footer {
+    text-align: center;
+    padding: 22px;
+    background: #694832;
+    color: white;
+    font-size: 13px;
+}
+
+@media (max-width: 750px) {
+    .menu-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .menu-card {
+        padding: 13px;
+    }
+
+    .menu-card h4 {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 420px) {
+    .menu-container {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>☕ MenuKu</h1>
+    <p>Temukan jajanan favoritmu dalam satu menu digital!</p>
+</header>
+
+<main>
+
+    <section class="pencarian">
+        <h2>Mau Jajan Apa Hari Ini? 🍪</h2>
+        <input
+            type="text"
+            id="cariMenu"
+            placeholder="Cari Dubai chewy, matcha, dimsum..."
+        >
+    </section>
+
+    <section class="kategori">
+        <h3>Kategori Menu</h3>
+        <button class="filter aktif" data-kategori="Semua">Semua</button>
+        <button class="filter" data-kategori="Camilan">Camilan</button>
+        <button class="filter" data-kategori="Makanan">Makanan</button>
+        <button class="filter" data-kategori="Minuman">Minuman</button>
+    </section>
+
+    <section>
+        <h3>🍰 Pilihan Menu</h3>
+        <div id="daftarMenu" class="menu-container"></div>
+    </section>
+
+    <section class="keranjang">
+        <h3>🛒 Keranjang Pesanan</h3>
+        <div id="isiKeranjang">
+            <p>Belum ada pesanan.</p>
+        </div>
+
+        <p class="total">
+            Total: Rp<span id="totalHarga">0</span>
+        </p>
+
+        <button id="kosongkanKeranjang">
+            Kosongkan Keranjang
+        </button>
+    </section>
+
+</main>
+
+<footer>
+    <p>© 2026 MenuKu — Menu Digital Cafe dan Restoran</p>
+</footer>
+
+<script>
+const menu = [
+    // CAMILAN
+    {nama:"Dubai Chewy Cookie",kategori:"Camilan",harga:15000,emoji:"🍪",deskripsi:"Cookie chewy dengan cokelat dan pistachio."},
+    {nama:"Cromboloni",kategori:"Camilan",harga:18000,emoji:"🥐",deskripsi:"Pastry renyah dengan isian krim."},
+    {nama:"Dessert Box Cokelat",kategori:"Camilan",harga:20000,emoji:"🍫",deskripsi:"Dessert lembut dengan lapisan cokelat."},
+    {nama:"Brownies Lumer",kategori:"Camilan",harga:12000,emoji:"🍰",deskripsi:"Brownies cokelat dengan topping lumer."},
+    {nama:"Bomboloni",kategori:"Camilan",harga:10000,emoji:"🍩",deskripsi:"Donat empuk dengan isian krim."},
+    {nama:"Korean Garlic Bread",kategori:"Camilan",harga:15000,emoji:"🥖",deskripsi:"Roti dengan krim keju dan bawang."},
+    {nama:"Churros",kategori:"Camilan",harga:12000,emoji:"🥨",deskripsi:"Camilan renyah dengan saus cokelat."},
+    {nama:"Mochi Daifuku",kategori:"Camilan",harga:8000,emoji:"🍡",deskripsi:"Mochi lembut dengan isian manis."},
+    {nama:"Croissant Cokelat",kategori:"Camilan",harga:14000,emoji:"🥐",deskripsi:"Pastry berlapis dengan cokelat."},
+    {nama:"Corndog Mozarella",kategori:"Camilan",harga:15000,emoji:"🧀",deskripsi:"Sosis dan keju berbalut adonan."},
+    {nama:"Dimsum Mentai",kategori:"Camilan",harga:18000,emoji:"🥟",deskripsi:"Dimsum ayam dengan saus mentai."},
+    {nama:"Takoyaki",kategori:"Camilan",harga:12000,emoji:"🍢",deskripsi:"Bola-bola gurih khas Jepang."},
+    {nama:"Makaroni Pedas",kategori:"Camilan",harga:8000,emoji:"🌶️",deskripsi:"Makaroni renyah berbumbu pedas."},
+    {nama:"Roti Bakar",kategori:"Camilan",harga:12000,emoji:"🍞",deskripsi:"Roti bakar dengan topping pilihan."},
+    {nama:"Pisang Nugget",kategori:"Camilan",harga:12000,emoji:"🍌",deskripsi:"Pisang crispy dengan topping cokelat."},
+    {nama:"Kentang Goreng",kategori:"Camilan",harga:12000,emoji:"🍟",deskripsi:"Kentang goreng renyah dan gurih."},
+    {nama:"Donat Glaze",kategori:"Camilan",harga:9000,emoji:"🍩",deskripsi:"Donat lembut dengan lapisan glaze."},
+    {nama:"Cookies and Cream Cake",kategori:"Camilan",harga:18000,emoji:"🍰",deskripsi:"Kue lembut dengan biskuit cokelat."},
+
+    // MAKANAN
+    {nama:"Seblak Ceker",kategori:"Makanan",harga:15000,emoji:"🍲",deskripsi:"Seblak pedas dengan kerupuk dan ceker."},
+    {nama:"Croissant Sandwich",kategori:"Makanan",harga:22000,emoji:"🥪",deskripsi:"Croissant isi telur dan keju."},
+    {nama:"Chicken Katsu",kategori:"Makanan",harga:23000,emoji:"🍗",deskripsi:"Ayam crispy disajikan dengan nasi."},
+    {nama:"Rice Bowl Teriyaki",kategori:"Makanan",harga:20000,emoji:"🍱",deskripsi:"Nasi dengan ayam saus teriyaki."},
+    {nama:"Spaghetti Bolognese",kategori:"Makanan",harga:22000,emoji:"🍝",deskripsi:"Pasta dengan saus tomat dan daging."},
+    {nama:"Mentai Rice",kategori:"Makanan",harga:25000,emoji:"🍛",deskripsi:"Nasi dengan saus mentai gurih."},
+    {nama:"Burger Crispy",kategori:"Makanan",harga:20000,emoji:"🍔",deskripsi:"Burger dengan ayam crispy."},
+    {nama:"Chicken Wings",kategori:"Makanan",harga:22000,emoji:"🍗",deskripsi:"Sayap ayam dengan saus pilihan."},
+    {nama:"Indomie Nyemek",kategori:"Makanan",harga:12000,emoji:"🍜",deskripsi:"Mi nyemek dengan topping telur."},
+    {nama:"Beef Teriyaki Bowl",kategori:"Makanan",harga:28000,emoji:"🥩",deskripsi:"Nasi dengan daging saus teriyaki."},
+
+    // MINUMAN
+    {nama:"Matcha Latte",kategori:"Minuman",harga:18000,emoji:"🍵",deskripsi:"Matcha dengan susu creamy."},
+    {nama:"Strawberry Matcha",kategori:"Minuman",harga:22000,emoji:"🍓",deskripsi:"Perpaduan matcha dan stroberi."},
+    {nama:"Es Kopi Susu Gula Aren",kategori:"Minuman",harga:18000,emoji:"🧋",deskripsi:"Kopi susu dengan gula aren."},
+    {nama:"Chocolate Creamy",kategori:"Minuman",harga:16000,emoji:"🍫",deskripsi:"Minuman cokelat dengan susu."},
+    {nama:"Boba Brown Sugar",kategori:"Minuman",harga:18000,emoji:"🧋",deskripsi:"Susu dengan boba dan gula aren."},
+    {nama:"Taro Milk",kategori:"Minuman",harga:15000,emoji:"🥤",deskripsi:"Susu taro yang lembut."},
+    {nama:"Red Velvet Latte",kategori:"Minuman",harga:18000,emoji:"🥤",deskripsi:"Minuman red velvet creamy."},
+    {nama:"Strawberry Yakult",kategori:"Minuman",harga:15000,emoji:"🍓",deskripsi:"Minuman stroberi segar."},
+    {nama:"Mango Yakult",kategori:"Minuman",harga:15000,emoji:"🥭",deskripsi:"Minuman mangga dengan Yakult."},
+    {nama:"Lemon Tea",kategori:"Minuman",harga:10000,emoji:"🍋",deskripsi:"Teh lemon yang menyegarkan."},
+    {nama:"Blue Ocean",kategori:"Minuman",harga:14000,emoji:"🧊",deskripsi:"Minuman segar berwarna biru."},
+    {nama:"Thai Tea",kategori:"Minuman",harga:12000,emoji:"🧋",deskripsi:"Teh Thailand dengan susu."},
+    {nama:"Es Kopi Caramel",kategori:"Minuman",harga:19000,emoji:"☕",deskripsi:"Kopi susu dengan sirup karamel."},
+    {nama:"Cookies and Cream",kategori:"Minuman",harga:18000,emoji:"🥤",deskripsi:"Susu creamy dengan biskuit."},
+    {nama:"Es Cokelat Hazelnut",kategori:"Minuman",harga:17000,emoji:"🍫",deskripsi:"Cokelat dengan aroma hazelnut."}
+];
+
+let kategoriAktif = "Semua";
+let keranjang = [];
+
+const daftarMenu = document.getElementById("daftarMenu");
+const cariMenu = document.getElementById("cariMenu");
+const isiKeranjang = document.getElementById("isiKeranjang");
+const totalHarga = document.getElementById("totalHarga");
+
+function formatRupiah(angka) {
+    return angka.toLocaleString("id-ID");
+}
+
+function tampilkanMenu() {
+    const kata = cariMenu.value.toLowerCase();
+
+    const hasil = menu.filter(item => {
+        const cocokNama =
+            item.nama.toLowerCase().includes(kata) ||
+            item.deskripsi.toLowerCase().includes(kata);
+
+        const cocokKategori =
+            kategoriAktif === "Semua" ||
+            item.kategori === kategoriAktif;
+
+        return cocokNama && cocokKategori;
+    });
+
+    daftarMenu.innerHTML = "";
+
+    if (hasil.length === 0) {
+        daftarMenu.textContent = "Menu tidak ditemukan.";
+        return;
+    }
+
+    hasil.forEach(item => {
+        const kartu = document.createElement("article");
+        kartu.className = "menu-card";
+
+        const emoji = document.createElement("div");
+        emoji.className = "emoji";
+        emoji.textContent = item.emoji;
+
+        const nama = document.createElement("h4");
+        nama.textContent = item.nama;
+
+        const deskripsi = document.createElement("p");
+        deskripsi.className = "deskripsi";
+        deskripsi.textContent = item.deskripsi;
+
+        const harga = document.createElement("p");
+        harga.className = "harga";
+        harga.textContent = "Rp" + formatRupiah(item.harga);
+
+        const tombol = document.createElement("button");
+        tombol.textContent = "+ Tambah Pesanan";
+        tombol.addEventListener("click", () => {
+            tambahKeranjang(item.nama);
+        });
+
+        kartu.append(emoji, nama, deskripsi, harga, tombol);
+        daftarMenu.appendChild(kartu);
+    });
+}
+
+document.querySelectorAll(".filter").forEach(tombol => {
+    tombol.addEventListener("click", () => {
+        kategoriAktif = tombol.dataset.kategori;
+
+        document.querySelectorAll(".filter").forEach(btn => {
+            btn.classList.remove("aktif");
+        });
+
+        tombol.classList.add("aktif");
+        tampilkanMenu();
+    });
+});
+
+cariMenu.addEventListener("input", tampilkanMenu);
+
+function tambahKeranjang(nama) {
+    const item = menu.find(m => m.nama === nama);
+    const ada = keranjang.find(m => m.nama === nama);
+
+    if (ada) {
+        ada.jumlah++;
+    } else {
+        keranjang.push({
+            nama: item.nama,
+            harga: item.harga,
+            jumlah: 1
+        });
+    }
+
+    tampilkanKeranjang();
+}
+
+function ubahJumlah(nama, perubahan) {
+    const item = keranjang.find(m => m.nama === nama);
+
+    if (!item) return;
+
+    item.jumlah += perubahan;
+
+    if (item.jumlah <= 0) {
+        keranjang = keranjang.filter(m => m.nama !== nama);
+    }
+
+    tampilkanKeranjang();
+}
+
+function tampilkanKeranjang() {
+    isiKeranjang.innerHTML = "";
+
+    if (keranjang.length === 0) {
+        isiKeranjang.textContent = "Belum ada pesanan.";
+    }
+
+    keranjang.forEach(item => {
+        const baris = document.createElement("div");
+        baris.className = "item-keranjang";
+
+        const nama = document.createElement("span");
+        nama.textContent = item.nama;
+
+        const kontrol = document.createElement("div");
+        kontrol.className = "kontrol";
+
+        const kurang = document.createElement("button");
+        kurang.textContent = "−";
+        kurang.setAttribute("aria-label", "Kurangi " + item.nama);
+        kurang.addEventListener("click", () => {
+            ubahJumlah(item.nama, -1);
+        });
+
+        const jumlah = document.createElement("span");
+        jumlah.textContent = item.jumlah;
+
+        const tambah = document.createElement("button");
+        tambah.textContent = "+";
+        tambah.setAttribute("aria-label", "Tambah " + item.nama);
+        tambah.addEventListener("click", () => {
+            ubahJumlah(item.nama, 1);
+        });
+
+        kontrol.append(kurang, jumlah, tambah);
+        baris.append(nama, kontrol);
+        isiKeranjang.appendChild(baris);
+    });
+
+    const total = keranjang.reduce(
+        (sum, item) => sum + item.harga * item.jumlah,
+        0
+    );
+
+    totalHarga.textContent = formatRupiah(total);
+}
+
+document.getElementById("kosongkanKeranjang")
+    .addEventListener("click", () => {
+        keranjang = [];
+        tampilkanKeranjang();
+    });
+
+tampilkanMenu();
+tampilkanKeranjang();
+</script>
+
+</body>
+</html>
